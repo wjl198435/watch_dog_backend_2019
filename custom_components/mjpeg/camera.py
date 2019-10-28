@@ -3,6 +3,8 @@
 import logging
 from contextlib import closing
 
+import traceback
+
 import aiohttp
 import requests
 # import Exception
@@ -61,7 +63,7 @@ ATTR_MATCHES = "matches"
 ATTR_SUMMARY = "summary"
 ATTR_TOTAL_MATCHES = "total_matches"
 
-CONF_URL = "url"
+CONF_DETECTOR_URL = "detector_url"
 CONF_AUTH_KEY = "auth_key"
 CONF_DETECTOR = "detector"
 CONF_LABELS = "labels"
@@ -89,7 +91,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Optional(CONF_PASSWORD): cv.string,
         vol.Optional(CONF_USERNAME): cv.string,
         vol.Optional(CONF_VERIFY_SSL, default=DEFAULT_VERIFY_SSL): cv.boolean,
-        vol.Optional(CONF_URL, default=DEFAULT_DETECTOR_URL): cv.string,
+        vol.Optional(CONF_DETECTOR_URL, default=DEFAULT_DETECTOR_URL): cv.string,
         vol.Optional(CONF_DETECTOR,default=DEFAULT_CONF_DETECTOR): cv.string,
         vol.Required(CONF_TIMEOUT, default=90): cv.positive_int,
         vol.Optional(CONF_AUTH_KEY, default=""): cv.string,
@@ -97,7 +99,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 )
 
 def get_detectors(config):
-    url = config[CONF_URL]
+    url = config[CONF_DETECTOR_URL]
     auth_key = config[CONF_AUTH_KEY]
     detector_name = config[CONF_DETECTOR]
     timeout = config[CONF_TIMEOUT]
@@ -183,17 +185,18 @@ class MjpegCamera(Camera):
     def __init__(self,hass, doods, device_info):
         """Initialize a MJPEG camera."""
         super().__init__()
-        self._confidence = 0.3
+        self._confidence = 0.32
+        self._font_hight=20
         self.hass = hass
         self.doods = doods
         self._device_info = device_info
-        self._url = device_info[CONF_URL]
+        self._detect_url = device_info[CONF_DETECTOR_URL]
         self._auth_key = device_info[CONF_AUTH_KEY]
         self._detector_name = device_info[CONF_DETECTOR]
         self._timeout = device_info[CONF_TIMEOUT]
 
         #
-        # _LOGGER.info("---------------------url=%s,_auth_key=%s,detector_name=%s,_timeout=%s",self._url,self._auth_key,self._detector_name,self._timeout)
+        _LOGGER.info("---------------------url=%s,_auth_key=%s,detector_name=%s,_timeout=%s",self._detect_url,self._auth_key,self._detector_name,self._timeout)
 
         self._name = device_info.get(CONF_NAME)
         self._authentication = device_info.get(CONF_AUTHENTICATION)
@@ -211,7 +214,9 @@ class MjpegCamera(Camera):
         dconfig={'pig':0.2,'person':0.2}
 
         self._dconfig = dconfig
-
+        self._matches = {}
+        self._summary = {}
+        self._total_matches = 0
 
         self.hass.helpers.event.async_track_time_interval(self.async_update_bbox,BBOX_UPDATE_INTERVAL)
         # self.hass.helpers.event.async_track_time_interval(update_tokens, TOKEN_CHANGE_INTERVAL)
@@ -234,26 +239,72 @@ class MjpegCamera(Camera):
         else:
             return int(1000)
 
+    def get_ctdet_attributes(self):
+        matches = {}
+        total_matches = 0
+
+
+        if not self._detectors_response or self._detectors_response['ctdet']['status'] != 0:
+            self._matches = matches
+            self._total_matches = total_matches
+
+            return
+
+        if 'ctdet' in self._detectors_response and self.response_time_delta() < 3:
+
+            results = self._detectors_response['ctdet']['detections']
+
+            for bbox in results:
+                _LOGGER.info("bbox=%s",bbox)
+                if bbox['confidence'] > self._confidence:
+                    label = bbox["friendly_label"]
+                    if label not in matches:
+                        matches[label] = []
+                    matches[label].append({"score":round(bbox['confidence']*100,1)})
+                    total_matches+=1
+
+        self._matches = matches
+        self._total_matches = total_matches
+
     def draw_bbox(self,image):
 
         if 'ctdet' in self._detectors_response and self.response_time_delta() < 3:
 
-            # _LOGGER.info("response_time_delta =  %s",self.response_time_delta())
-
             results = self._detectors_response['ctdet']['detections']
+
+            img_PIL = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+
+            font = ImageFont.truetype('NotoSansCJK-Black.ttc',16)
+            fillColor = (255,0,0)
             for bbox in results:
                 # _LOGGER.info("bbox=%s",bbox)
                 if bbox['confidence'] > self._confidence:
-                    img_PIL = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-                    font = ImageFont.truetype('NotoSansCJK-Black.ttc',18)
-                    fillColor = (255,255,0)
-                    position = (bbox['top']+6, bbox['left'] + 2)
-                    str = bbox['label']+":{}".format(round(bbox['confidence']*100,1))+"%"
 
+                    position = (bbox['top']+6, bbox['left'] + 2)
+                    str = bbox['friendly_label']+":{}".format(round(bbox['confidence']*100,1))+"%"
                     draw = ImageDraw.Draw(img_PIL)
                     draw.text(position, str, font=font, fill=fillColor)
-                    image = cv2.cvtColor(np.asarray(img_PIL),cv2.COLOR_RGB2BGR)
 
+            font = ImageFont.truetype('NotoSansCJK-Black.ttc',18)
+            hight=48
+            widht=12
+            position = (widht, hight)
+            draw = ImageDraw.Draw(img_PIL)
+            str="总数：{}".format(self._total_matches)
+            draw.text(position, str, font=font, fill=(255,0,0))
+            hight += self._font_hight
+
+            for label, values in self._matches.items():
+                str = "{}:{}".format(label,len(values))
+                position = (widht, hight)
+                draw.text(position, str, font=font, fill=(255,0,0))
+                hight += self._font_hight
+
+
+            image = cv2.cvtColor(np.asarray(img_PIL),cv2.COLOR_RGB2BGR)
+
+            for bbox in results:
+                if bbox['confidence'] > self._confidence:
                     cv2.rectangle(image,
                         (bbox['top'], bbox['left']),
                         (bbox['bottom'], bbox['right']), (255,0,0), 2)
@@ -282,10 +333,14 @@ class MjpegCamera(Camera):
                 # _LOGGER.info("will detect the image!!!,image.len=%s",len(image))
                 response = self.doods.detect(image, detector_name=self._detector_name)
                 self._detectors_response[response['model']]= response
-                _LOGGER.info("self._detectors_response=%s", self._detectors_response)
+                # _LOGGER.info("self._detectors_response=%s", self._detectors_response)
+
+                #获取ctdet model 检测结果
+                self.get_ctdet_attributes()
 
             except Exception as e:
-                _LOGGER.error(" detector_task is failed !! %s", e)
+                _LOGGER.error(" detector_task is failed !! %s", str(e))
+                _LOGGER.error(" detector_task is failed !! %s", traceback.print_exc())
 
             # await asyncio.sleep(5)
             # response = self.doods.detect(image, detector_name='multi_pose')
@@ -319,6 +374,16 @@ class MjpegCamera(Camera):
             #     font, 0.5, (0, 0, 0), thickness=1, lineType=cv2.LINE_AA)
             # cv2.imwrite('image_{}.jpg'.format(random.randint(1,6)),img)
 
+    @property
+    def device_state_attributes(self):
+        _LOGGER.info("device_state_attributes----->>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        return {
+            ATTR_MATCHES: self._matches,
+            ATTR_SUMMARY :{
+                label: len(values) for label, values in self._matches.items()
+            },
+            ATTR_TOTAL_MATCHES : self._total_matches,
+        }
 
     async def async_camera_image(self):
         """Return a still image response from the camera."""
@@ -432,7 +497,7 @@ class MjpegCamera(Camera):
                         # _LOGGER.info("write file =%s",image_file)
                         # cv2.imwrite(image_file, opencv_image)
 
-                        img_param = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
+                        img_param = [int(cv2.IMWRITE_JPEG_QUALITY), 95]
                         _, opencv_image = cv2.imencode('.jpg', opencv_image, img_param)
 
                         image = opencv_image.tobytes()

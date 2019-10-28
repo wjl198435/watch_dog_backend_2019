@@ -98,6 +98,8 @@ stream:
 # 本机camera 获取 https://www:home-assistant:io/blog/2016/06/23/usb-webcams-and-home-assistant/:
 camera:
   - platform: mjpeg
+    detector: ctdet
+    detector_url: http://localhost:8088
     mjpeg_url: !secret motion_camera_url1
     name: rtsp_motion_camera
 
