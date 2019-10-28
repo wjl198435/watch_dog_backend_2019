@@ -1,0 +1,104 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+#default_config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
+
+# Text to speech
+
+homeassistant: !include conf/homeassistant.yaml
+
+
+frontend:
+  # Example absolute path: /home/paulus/dev/hass/home-assistant-polymer
+  development_repo: /home/jack/Work/home-assistant-polymer
+
+default_config:
+
+#camera: !include conf/media_player/ffmpeg.yaml
+
+
+panel_custom: !include conf/panel.yaml
+#panel_custom: !include panel_custom.yaml
+
+recorder: !include conf/recorder.yaml
+logger: !include conf/logger.yaml
+
+
+#image_processing:
+#  - platform: ctdet
+#    scan_interval: 1
+#    source:
+#      - entity_id: camera.pc_camera
+#        name: "ctdet"
+#image_processing:
+#  - platform: ctdet
+#    source:
+#      - entity_id: camera.local_file
+#    file_out:
+#      - "/tmp/{{ camera_entity.split('.')[1] }}_latest.jpg"
+#      - "/tmp/{{ camera_entity.split('.')[1] }}_{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg"
+
+#image_processing:
+#  - platform: ctdet
+#    topic: 'home-assistan'
+#    name: "hello"
+
+
+#mqtt_basic_async:
+#  topic: "home-assistant/mqtt_example"
+
+#mqtt_basic:
+#  topic: "home-assistant/mqtt_example"
+
+stream:
+
+#ffmpeg -i /dev/video0 -codec:v libx264 -qp 0 lossless.mp4
+ffmpeg:
+  ffmpeg_bin: /usr/local/bin/ffmpeg
+#camera:
+#  - platform: ffmpeg
+#    name: Camera
+#    input: -f dshow -i /dev/video0
+#    extra_arguments: -pred 1 -q:v 2 -s 704x576  -codec:v libx264
+
+
+
+# sudo motion
+# 本机camera 获取 https://www:home-assistant:io/blog/2016/06/23/usb-webcams-and-home-assistant/:
+camera:
+  - platform: mjpeg
+    mjpeg_url: !secret motion_camera_url
+#    mjpeg_url: file:/dev/video0
+    name: pc_camera
+
+weather:
+  - platform: darksky
+    api_key: !secret darksky_key
+#  需要启动 sudo service mosquitto start
+mqtt: !include conf/mosquitto.yaml
+switch: !include conf/platforms/mqtt/switches.yaml
+light:  !include conf/platforms/mqtt/lights.yaml
+sensor: !include_dir_merge_list conf/platforms/sensors/
+fan: !include conf/platforms/mqtt/fans.yaml
+binary_sensor: !include binary_sensors.yaml
+input_boolean: !include_dir_merge_named input_boolean
+
+
+
+#media_player :
+#  - platform: vlc
+#    name: VLC player
+
+
+
+#light: !include conf/lights/street_light.yaml
+
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml

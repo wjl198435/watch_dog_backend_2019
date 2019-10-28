@@ -1,0 +1,2 @@
+- platform: mqtt
+  command_topic: "bedroom_fan/on/set"

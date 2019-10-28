@@ -1,0 +1,7 @@
+#sudo add-apt-repository ppa:kirillshkrogalev/ffmpeg-next
+#sudo apt-get update
+#sudo apt-get install ffmpeg
+
+- platform: ffmpeg
+  name:  Camera
+  input: -rtsp_transport udp -re -i  rtsp://localhost:7654/myrtsp

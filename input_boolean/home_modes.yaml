@@ -1,0 +1,25 @@
+guest_mode:
+  name: 通风模式
+  icon: mdi:fan
+  initial: off
+
+school_mode:
+  name: 加热模式
+  icon: mdi:weather-sunny
+  initial: on
+
+alert_mode:
+  name: 报警模式
+  icon: mdi:alert-octagram
+  initial: off
+
+speech_notifications:
+  name: 语音通知
+  icon: mdi:speaker-wireless
+  initial: on
+
+text_notifications:
+  name: 文字通知
+  icon: mdi:cellphone-wireless
+  initial: on
+

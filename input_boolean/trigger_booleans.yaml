@@ -1,0 +1,32 @@
+#triggers
+good_night:
+  name: 夜晚模式
+  initial: off
+
+good_morning:
+  name: 夜晚模式
+  initial: off
+
+meal_time:
+  name: 进食模式
+  initial: off
+
+tv_time:
+  name: 运动模式
+  initial: off
+
+work:
+  name: 育肥模式
+  initial: off
+#
+#flash:
+#  name: Flash
+#  initial: off
+#
+#color_tornado:
+#  name: Color Tornado!
+#  initial: off
+
+#guard_dog:
+#  name: 布控模式
+#  initial: off

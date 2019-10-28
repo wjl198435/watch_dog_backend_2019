@@ -1,0 +1,50 @@
+## 通过homeassistant集成安装  Configuration > Users (manage users)
+    Configuration > Integrations and select configure next to MQTT
+
+## 1.ubuntu安装mqtt broker -mosquitto (https://mosquitto.org/download/)
+    1.1 #sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa
+    1.2 #sudo apt-get update
+    1.3 #sudo apt-get install mosquitto
+    1.4 查看状态：
+    #sudo service mosquitto status 
+    1.5.开启/停止mosquitto服务
+    sudo service mosquitto start
+    sudo service mosquitto stop
+    
+## 2简单的测试
+###   2.0 一个完整的MQTT示例包括代理器，发布者和订阅者。
+     测试分为以下几个步骤：
+####   （1）启动服务mosquitto
+####   （2）订阅者通过mosquitto_sub订阅指定主题的消息。
+####   （3）发布者通过mosquitto_pub发布指定主题的消息。
+####   （4）代理服务器把该主题的消息推送到订阅者。
+    
+### 本机测试：代理器，发布者和订阅者都在本机。
+
+### 2.1.安装mosquitto客户端
+
+    sudo apt-get install mosquitto-clients
+### 2.2.打开一个终端，订阅主题
+
+    mosquitto_sub -h localhost -t "mqtt" -v  
+    【-h】指定要连接的MQTT服务器
+    【-t】订阅主题，此处为mqtt
+    【-v】打印更多的调试信息  
+### 2.3.打开另一个终端，发布主题
+
+    mosquitto_pub -h localhost -t "mqtt" -m "Hello2 MQTT"
+    【-h】指定要连接的MQTT服务器
+    【-t】向指定主题推送消息
+    【-m】指定消息内容    
+    
+### 3 网络测试
+    mosquitto_sub -h test.mosquitto.org -t "#" -v    
+    
+### 4. 创建用户名及密码 (https://mosquitto.org/man/mosquitto_passwd-1.html)
+    1.sudo  mosquitto_passwd -c /etc/mosquitto/passwd ral
+### 5.  mosquitto_passwd -c /etc/mosquitto/mosquitto.conf 
+    带密码访问：
+    mosquitto_sub -u demo -P demo -h localhost -t "mqtt" -v 
+    mosquitto_pub -u demo -P demo   -h localhost -t "mqtt" -m "Hello2 MQTT" 
+    
+    

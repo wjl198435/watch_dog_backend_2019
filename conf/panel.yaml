@@ -1,0 +1,16 @@
+---
+- name: floorplan
+  sidebar_title: 全景图
+  sidebar_icon: mdi:border-all
+  url_path: floorplan
+  config:
+    hide_app_toolbar:
+    config: /local/custom_ui/floorplan/floorplan_main.yaml
+
+- name: area
+  sidebar_title: 局部图
+  sidebar_icon: mdi:image-area
+  url_path: area
+  config:
+    hide_app_toolbar:
+    config: /local/custom_ui/floorplan/floorplan_area1.yaml

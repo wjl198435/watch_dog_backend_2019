@@ -1,0 +1,13 @@
+- platform: mqtt
+  name: "Demo Switch"
+  command_topic: "home-assistant/bedroom/switch1/set"
+  state_topic: "home-assistant/bedroom/switch1"
+  #在无真实设备境况下注释，否则界面显示不可用
+#  availability_topic: "home-assistant/bedroom/switch1/available"
+  payload_on: "ON"
+  payload_off: "OFF"
+  state_on: "ON"
+  state_off: "OFF"
+  optimistic: false
+  qos: 0
+  retain: true

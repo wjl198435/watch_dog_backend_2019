@@ -1,0 +1,13 @@
+#default: warning
+default: info
+logs:
+  homeassistant.components.mqtt: info
+  homeassistant.components.image_processing: debug
+  homeassistant.components.websocket_api: warning
+  homeassistant.core: warning
+  homeassistant.util.json: warning
+  homeassistant.loader: warning
+  custom_components.onvif.camera: info
+  custom_components.stream: debug
+
+

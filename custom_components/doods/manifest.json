@@ -1,0 +1,13 @@
+{
+    "domain": "mydoods",
+    "name": "DOODS - Distributed Outside Object Detection Service",
+    "documentation": "https://www.home-assistant.io/integrations/doods",
+    "requirements": [
+        "pydoods==1.0.2",
+        "aiohttp_cors",
+        "sqlalchemy",
+        "pillow"
+    ],
+    "dependencies": [],
+    "codeowners": []
+}

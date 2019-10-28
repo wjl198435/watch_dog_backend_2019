@@ -1,0 +1,13 @@
+{
+  "domain": "mjpeg",
+  "name": "Mjpeg",
+  "documentation": "https://www.home-assistant.io/integrations/mjpeg",
+  "requirements": [
+    "numpy==1.17.3",
+    "opencv-python-headless==4.1.1.26"
+  ],
+  "dependencies": [
+
+  ],
+  "codeowners": []
+}

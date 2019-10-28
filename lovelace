@@ -1,0 +1,42 @@
+{
+    "data": {
+        "config": {
+            "title": "\u770b\u7267\u72ac",
+            "views": [
+                {
+                    "badges": [
+                        "binary_sensor.updater",
+                        "person.jack",
+                        "sun.sun"
+                    ],
+                    "cards": [
+                        {
+                            "aspect_ratio": "70%",
+                            "type": "iframe",
+                            "url": "http://localhost:8081"
+                        },
+                        {
+                            "camera_image": "camera.pc_camera",
+                            "camera_view": "live",
+                            "entities": [
+                                "light.mqtt_light"
+                            ],
+                            "image": "http://localhost:8081",
+                            "title": "Front garden",
+                            "type": "picture-glance"
+                        },
+                        {
+                            "camera_view": "live",
+                            "entity": "camera.pc_camera1",
+                            "type": "picture-entity"
+                        }
+                    ],
+                    "path": "default_view",
+                    "title": "Home"
+                }
+            ]
+        }
+    },
+    "key": "lovelace",
+    "version": 1
+}

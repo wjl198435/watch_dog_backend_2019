@@ -1,0 +1,184 @@
+page_id: area1
+name: 一号楼
+image: /local/custom_ui/floorplan/area1.svg
+stylesheet: /local/custom_ui/floorplan/area1.css
+
+
+
+#page_id: clock
+#image: /local/custom_ui/floorplan/clock.svg
+#stylesheet: /local/custom_ui/floorplan/clock.css
+
+variables:
+  - name: floorplan.hours
+  - name: floorplan.minutes
+
+defaults:
+  hover_over: false
+  more_info: false
+
+rules:
+
+#  - element: floorplan.clock_button
+#    action:
+#      service: floorplan.page_navigate
+#      data:
+#        page_id: clock_config
+
+#  - entity: sensor.example_temperature
+#    text_template: '${entity.state ? Math.ceil(entity.state) + "°C": "undefined"}'
+#    class_template: 'return "static-temp";'
+
+
+#    text_template: '${entity.state ? entity.state.slice(0, 5) : "00:00"}'
+#    states:
+#      - state: 'on'
+#        class: 'text-home'
+
+
+
+#  - entity: sensor.temperature
+#    image_template: '/local/custom_ui/floorplan/buttons/${(entity.state === "on") ? "snooze_on" : "snooze"}.svg'
+#    action:
+#      service: input_boolean.toggle
+#      data:
+#        entity_id: input_boolean.clock_snooze
+#
+#  - entity: sensor.temperature
+#    image_template: '/local/custom_ui/floorplan/buttons/${(entity.state === "on") ? "school_on" : "school_off"}.svg'
+#    action:
+#      service: input_boolean.toggle
+#      data:
+#        entity_id: input_boolean.school_mode
+#
+#  - entity: sensor.temperature
+#    image_template: '/local/custom_ui/floorplan/buttons/${(entity.state === "playing") ? "stop" : "radio_on"}.svg'
+#    action:
+#      service_template: '${(entity.state === "playing") ? "media_player.media_stop" : "media_player.play_media"}'
+#      data:
+#        media_content_id: http://listen.djcmedia.com:80/americascountryhigh
+#        media_content_type: audio/mp4
+#
+#  - name: thermostats_temp
+#    entities:
+#      - sensor.temperature
+#      - sensor.temperature
+#    text_template: '${entity.attributes.current_temperature ? Math.ceil(entity.attributes.current_temperature) + "°": "undefined"}'
+#    class_template: 'return "static-temp";'
+#
+  - name: ctdet
+    entities:
+      -  sensor.example_temperature
+#    text_template: '${entity.state ? Math.ceil(entity.state) + "°": "undefined"}'
+#    class_template: 'return "static-temp";'
+    image_template: '
+          var image_idx = entity.state % 200
+          return "/local/custom_ui/floorplan/images/ctdet/"+image_idx+".jpg"
+          '
+
+  - name: multi_pose
+    entities:
+      -  sensor.example_temperature_2
+    image_template: '
+          var image_idx = entity.state % 200
+          return "/local/custom_ui/floorplan/images/multi_pose/"+image_idx+".jpg"
+          '
+  - name:  Cameras
+    entities:
+      - camera.pc_camera
+    states:
+      - state: 'idle'
+        class: 'camera-idle'
+    image_template: '
+         ${entity.attributes.entity_picture}
+        '
+    image_refresh_interval: 1
+
+
+#  - name: text_states
+#    entities:
+#      - sensor.temperature
+#    hover_over: false
+#    more_info: false
+#    text_template: '${entity.state ? entity.state : "undefined"}'
+#    class_template: 'return "static-text";'
+#
+#  - name: text_font_date
+#    entities:
+#      - sensor.temperature
+#      - sensor.temperature
+#    hover_over: false
+#    more_info: false
+#    text_template: '${entity.state ? entity.state : "undefined"}'
+#    class_template: 'return "static-text-date";'
+#
+#  - name: text_font_time
+#    entities:
+#      - sensor.temperature
+#    hover_over: false
+#    more_info: false
+#    text_template: '${entity.state ? entity.state : "undefined"}'
+#    class_template: 'return "static-text-time";'
+#
+#  - name: text_font_am_pm
+#    entities:
+#      - sensor.temperature
+#    hover_over: false
+#    more_info: false
+#    text_template: '${entity.state ? entity.state : "undefined"}'
+#    class_template: 'return "static-text-am_pm";'
+#
+#
+#  # - name: Presence
+#  #   entities:
+#  #     - binary_sensor.sleepnumber_carlo_carlo_is_in_bed
+#  #     - binary_sensor.sleepnumber_carlo_stacey_is_in_bed
+#  #   states:
+#  #     - state: 'on'
+#  #       class: 'presence-on'
+#  #     - state: 'off'
+#  #       class: 'presence-off'
+#
+#  - name: Dark Sky Sensors
+#    entities:
+#      - entity: sensor.temperature
+#        element: sensor.dark_sky_minutely_summary_icon
+
+#    image_template: '
+#      var imageName = "windy";
+#      switch (entity.attributes.entity_picture) {
+#        case "/static/images/darksky/weather-sunny.svg":
+#          imageName = "sunny-1";
+#          break;
+#        case "/static/images/darksky/weather-night.svg":
+#          imageName = "night-1";
+#          break;
+#        case "/static/images/darksky/weather-partlycloudy.svg":
+#          imageName = "partlycloudy-day-1";
+#          break;
+#        case "/static/images/darksky/weather-cloudy.svg":
+#          imageName = "partlycloudy-night-1";
+#          break;
+#        case "/static/images/darksky/weather-cloudy.svg":
+#          imageName = "cloudy-day-1";
+#          break;
+#        case "/static/images/darksky/weather-pouring.svg":
+#          imageName = "thunder";
+#          break;
+#        case "/static/images/darksky/weather-snowy.svg":
+#          imageName = "snowy-day-1";
+#          break;
+#      }
+#      return "/local/custom_ui/floorplan/images/weather/" + imageName + ".svg";
+#      '
+
+
+
+#  - name: Camera Images
+#    entities:
+#      - light.mqtt_light
+##    image_template: '${entity.attributes.entity_picture}'
+#    image_template:
+#      '
+#      return "/local/custom_ui/floorplan/images/weather/sunny-1.png"
+#      '

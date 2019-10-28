@@ -1,0 +1,5 @@
+
+- platform: awesome_lights
+  host: HOST_HERE
+  username: USERNAME_HERE
+  password: PASSWORD_HERE_OR_secrets.yaml

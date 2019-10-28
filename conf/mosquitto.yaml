@@ -1,0 +1,17 @@
+---
+broker: !secret mqtt_broker
+port: !secret mqtt_port
+client_id: !secret  client_id
+username: !secret mosquitto_username
+password: !secret mosquitto_password
+protocol: !secret mqtt_protocol
+
+discovery: true
+discovery_prefix: homeassistant
+
+birth_message:
+  topic: 'hass/status'
+  payload: 'online'
+will_message:
+  topic: 'hass/status'
+  payload: 'offline'

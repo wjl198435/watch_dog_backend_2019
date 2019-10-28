@@ -1,0 +1,162 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+#default_config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
+
+# Text to speech
+
+homeassistant: !include conf/homeassistant.yaml
+# automation: !include conf/automations/automations.yaml
+
+frontend: !include conf/frontend/themes.yaml
+  # Example absolute path: /home/paulus/dev/hass/home-assistant-polymer
+
+
+default_config:
+
+#camera: !include conf/media_player/ffmpeg.yaml
+
+
+panel_custom: !include conf/panel.yaml
+#panel_custom: !include panel_custom.yaml
+
+recorder: !include conf/recorder.yaml
+logger: !include conf/logger.yaml
+
+## 路由器panel
+panel_iframe:
+  netgear:               #面板名称
+    title: 路由器设置       #标题（必填）,在侧面板中显示。
+    icon: mdi:router-wireless         #图标（可选）
+    url: http://192.168.8.1/html/home.html #要打开的URL（必填）。
+
+#image_processing:
+#  - platform: mydoods
+#    scan_interval: 10
+#    url: !secret ai_server_url
+#    detector: default
+#    source:
+#      - entity_id: camera.hik_motion_camera
+#    file_out:
+#      - "/tmp/{{ camera_entity.split('.')[1] }}_latest.jpg"
+#      - "/tmp/{{ camera_entity.split('.')[1] }}_{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg"
+#    confidence: 10
+#    labels:
+#      - name: person
+#        confidence: 40
+#        area:
+#          # Exclude top 10% of image
+#          top: 0.1
+#          # Exclude right 15% of image
+#          right: 0.85
+#      - pig
+#      - truck
+
+#image_processing:
+#  - platform: ctdet
+#    scan_interval: 1
+#    source:
+#      - entity_id: camera.pc_camera
+#        name: "ctdet"
+#image_processing:
+#  - platform: ctdet
+#    source:
+#      - entity_id: camera.local_file
+#    file_out:
+#      - "/tmp/{{ camera_entity.split('.')[1] }}_latest.jpg"
+#      - "/tmp/{{ camera_entity.split('.')[1] }}_{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg"
+
+#image_processing:
+#  - platform: ctdet
+#    topic: 'home-assistan'
+#    name: "hello"
+
+
+#mqtt_basic_async:
+#  topic: "home-assistant/mqtt_example"
+
+#mqtt_basic:
+#  topic: "home-assistant/mqtt_example"
+
+stream:
+
+#ffmpeg -i /dev/video0 -codec:v libx264 -qp 0 lossless.mp4
+#ffmpeg:
+#  ffmpeg_bin: /usr/local/bin/ffmpeg
+#camera:
+#  - platform: ffmpeg
+#    name: Camera
+#    input: -f dshow -i /dev/video0
+#    extra_arguments: -pred 1 -q:v 2 -s 704x576  -codec:v libx264
+
+
+
+# sudo motion
+# 本机camera 获取 https://www:home-assistant:io/blog/2016/06/23/usb-webcams-and-home-assistant/:
+camera:
+  - platform: mjpeg
+    mjpeg_url: !secret motion_camera_url1
+    name: rtsp_motion_camera
+
+  - platform: mjpeg
+    mjpeg_url: !secret motion_camera_url2
+    name: web_motion_camera
+
+#  - platform: ffmpeg
+#    name: ezviz1
+#    #用户名和密码是 登陆 http://192.168.8.103 时用的密码
+#    input: -rtsp_transport tcp -i rtsp://admin:wjl19840305@192.168.8.103:554/h264/ch1/main/av_stream
+
+#  - platform: onvif
+#    host: !secret onvif_host
+#    name: onvif_camera
+#    ## 用户名和密码 为集成协议创建用户名和密码
+#    username: !secret onvif_user
+#    password: !secret onvif_passwd
+#    port: 80
+#    ## profile 0 高清 1 普清
+#    profile: 1
+#    extra_arguments: -q:v 2
+
+
+
+### for mac ffmpeg -f avfoundation -framerate 30 -i "0" out2.mpg
+#  - platform: ffmpeg
+#    input: "0"
+#    extra_arguments: "-f avfoundation -framerate 30"
+#    name: mac_camera
+
+
+weather:
+  - platform: darksky
+    api_key: !secret darksky_key
+
+
+#  需要启动 sudo service mosquitto start
+mqtt: !include conf/mosquitto.yaml
+switch: !include conf/platforms/mqtt/switches.yaml
+light:  !include conf/platforms/mqtt/lights.yaml
+sensor: !include_dir_merge_list conf/platforms/sensors/
+fan: !include conf/platforms/mqtt/fans.yaml
+binary_sensor: !include binary_sensors.yaml
+input_boolean: !include_dir_merge_named input_boolean
+
+
+
+#media_player :
+#  - platform: vlc
+#    name: VLC player
+
+
+
+#light: !include conf/lights/street_light.yaml
+
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include_dir_merge_list conf/automations
+script: !include scripts.yaml
