@@ -183,7 +183,7 @@ class MjpegCamera(Camera):
     def __init__(self,hass, doods, device_info):
         """Initialize a MJPEG camera."""
         super().__init__()
-        self._confidence = 0.45
+        self._confidence = 0.3
         self.hass = hass
         self.doods = doods
         self._device_info = device_info
@@ -192,8 +192,8 @@ class MjpegCamera(Camera):
         self._detector_name = device_info[CONF_DETECTOR]
         self._timeout = device_info[CONF_TIMEOUT]
 
-
-        _LOGGER.info("---------------------url=%s,_auth_key=%s,detector_name=%s,_timeout=%s",self._url,self._auth_key,self._detector_name,self._timeout)
+        #
+        # _LOGGER.info("---------------------url=%s,_auth_key=%s,detector_name=%s,_timeout=%s",self._url,self._auth_key,self._detector_name,self._timeout)
 
         self._name = device_info.get(CONF_NAME)
         self._authentication = device_info.get(CONF_AUTHENTICATION)
@@ -224,19 +224,32 @@ class MjpegCamera(Camera):
         self.hass.async_add_job(self.detector_task)
         # _LOGGER.error("image.len %s",type(image))
 
-
+    def response_time_delta(self):
+        if 'ctdet' in self._detectors_response and  'updatetime' in self._detectors_response['ctdet']:
+            now = time.time()
+            uptime = self._detectors_response['ctdet']['updatetime']
+            delta_time = int(now - uptime)
+            # _LOGGER.info("now=%s,uptime=%s------------------------delta_time =  %s",now, uptime ,delta_time)
+            return delta_time
+        else:
+            return int(1000)
 
     def draw_bbox(self,image):
-        if 'ctdet' in self._detectors_response:
+
+        if 'ctdet' in self._detectors_response and self.response_time_delta() < 3:
+
+            # _LOGGER.info("response_time_delta =  %s",self.response_time_delta())
+
             results = self._detectors_response['ctdet']['detections']
             for bbox in results:
-                _LOGGER.info("bbox=%s",bbox)
+                # _LOGGER.info("bbox=%s",bbox)
                 if bbox['confidence'] > self._confidence:
                     img_PIL = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-                    font = ImageFont.truetype('NotoSansCJK-Black.ttc', 28)
-                    fillColor = (0,0,255)
+                    font = ImageFont.truetype('NotoSansCJK-Black.ttc',18)
+                    fillColor = (255,255,0)
                     position = (bbox['top']+6, bbox['left'] + 2)
-                    str = bbox['label']
+                    str = bbox['label']+":{}".format(round(bbox['confidence']*100,1))+"%"
+
                     draw = ImageDraw.Draw(img_PIL)
                     draw.text(position, str, font=font, fill=fillColor)
                     image = cv2.cvtColor(np.asarray(img_PIL),cv2.COLOR_RGB2BGR)
@@ -246,27 +259,30 @@ class MjpegCamera(Camera):
                         (bbox['bottom'], bbox['right']), (255,0,0), 2)
                     # cv2.putText(image, bbox['label'], (bbox['top'], bbox['left'] - 2),
                     #     3, 0.5, (0, 0, 0), thickness=1, lineType=cv2.LINE_AA)
+        else:
+            _LOGGER.warn("object detect sever is not ready! ")
 
         return  image
 
     async def detector_task(self):
 
         start = time.time()
-        await asyncio.sleep(random.randint(1,6))
+        await asyncio.sleep(random.randint(2,5))
         _LOGGER.info("sleep: %s",time.time()-start)
         # _LOGGER.warn("detector_task*******************")
 
         image = await self.async_camera_image()
-        _LOGGER.debug("image: %s",type(image))
+        # _LOGGER.debug("image: %s",type(image))
         if self.doods is None:
             _LOGGER.warn("AI is not in server,will try reconnect" )
             self.doods = get_detectors(self._device_info)
         else:
 
             try:
-                _LOGGER.info("will detect the image!!!,image.len=%s",len(image))
+                # _LOGGER.info("will detect the image!!!,image.len=%s",len(image))
                 response = self.doods.detect(image, detector_name=self._detector_name)
                 self._detectors_response[response['model']]= response
+                _LOGGER.info("self._detectors_response=%s", self._detectors_response)
 
             except Exception as e:
                 _LOGGER.error(" detector_task is failed !! %s", e)
@@ -405,7 +421,6 @@ class MjpegCamera(Camera):
                     buffer = buffer[end + 2:]
                     pil_img =  Image.open(io.BytesIO(bytearray(image)))
                     img_width, img_height = pil_img.size
-
 
 
                     _LOGGER.info("img_width=%s, img_height=%s",img_width, img_height)
