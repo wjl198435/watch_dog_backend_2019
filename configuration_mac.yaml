@@ -98,14 +98,16 @@ stream:
 # 本机camera 获取 https://www:home-assistant:io/blog/2016/06/23/usb-webcams-and-home-assistant/:
 camera:
   - platform: mjpeg
-    detector: ctdet
+    detector: multi_pose
     detector_url: http://localhost:8088
     mjpeg_url: !secret motion_camera_url1
-    name: rtsp_motion_camera
+    name: 目标检测
 
   - platform: mjpeg
+    detector: ctdet
+    detector_url: http://localhost:8088
     mjpeg_url: !secret motion_camera_url2
-    name: web_motion_camera
+    name: 姿态检测
 
 #  - platform: ffmpeg
 #    name: ezviz1

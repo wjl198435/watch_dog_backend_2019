@@ -103,10 +103,12 @@ def get_detectors(config):
     auth_key = config[CONF_AUTH_KEY]
     detector_name = config[CONF_DETECTOR]
     timeout = config[CONF_TIMEOUT]
+    _LOGGER.info("get_detectors->url=%s detector_name=%s",url,detector_name)
     doods = None
     try:
         doods = PyDOODS(url, auth_key, timeout)
         response = doods.get_detectors()
+        _LOGGER.info("get_detectors->response=%s",response)
         if not isinstance(response, dict):
             _LOGGER.warning("Could not connect to doods server: %s", url)
         detector = {}
@@ -196,7 +198,7 @@ class MjpegCamera(Camera):
         self._timeout = device_info[CONF_TIMEOUT]
 
         #
-        _LOGGER.info("---------------------url=%s,_auth_key=%s,detector_name=%s,_timeout=%s",self._detect_url,self._auth_key,self._detector_name,self._timeout)
+        _LOGGER.info("---------------------url=%s,detector_name=%s,_timeout=%s",self._detect_url,self._detector_name,self._timeout)
 
         self._name = device_info.get(CONF_NAME)
         self._authentication = device_info.get(CONF_AUTHENTICATION)
@@ -221,6 +223,27 @@ class MjpegCamera(Camera):
         self.hass.helpers.event.async_track_time_interval(self.async_update_bbox,BBOX_UPDATE_INTERVAL)
         # self.hass.helpers.event.async_track_time_interval(update_tokens, TOKEN_CHANGE_INTERVAL)
 
+
+        # multi_pose conf
+        self.edges = [[0, 1], [0, 2], [1, 3], [2, 4],
+                      [3, 5], [4, 6], [5, 6],
+                      [5, 7], [7, 9], [6, 8], [8, 10],
+                      [5, 11], [6, 12], [11, 12],
+                      [11, 13], [13, 15], [12, 14], [14, 16]]
+
+        self.ec = [(255, 0, 0), (0, 0, 255), (255, 0, 0), (0, 0, 255),
+                   (255, 0, 0), (0, 0, 255), (255, 0, 255),
+                   (255, 0, 0), (255, 0, 0), (0, 0, 255), (0, 0, 255),
+                   (255, 0, 0), (0, 0, 255), (255, 0, 255),
+                   (255, 0, 0), (255, 0, 0), (0, 0, 255), (0, 0, 255)]
+
+        self.colors_hp = [(255, 0, 255), (255, 0, 0), (0, 0, 255),
+                          (255, 0, 0), (0, 0, 255), (255, 0, 0), (0, 0, 255),
+                          (255, 0, 0), (0, 0, 255), (255, 0, 0), (0, 0, 255),
+                          (255, 0, 0), (0, 0, 255), (255, 0, 0), (0, 0, 255),
+                          (255, 0, 0), (0, 0, 255)]
+        self.num_joints = 17
+
     @callback
     def async_update_bbox(self,time):
 
@@ -229,10 +252,10 @@ class MjpegCamera(Camera):
         self.hass.async_add_job(self.detector_task)
         # _LOGGER.error("image.len %s",type(image))
 
-    def response_time_delta(self):
-        if 'ctdet' in self._detectors_response and  'updatetime' in self._detectors_response['ctdet']:
+    def response_time_delta(self,detector_name='ctdet'):
+        if detector_name in self._detectors_response and  'updatetime' in self._detectors_response[detector_name]:
             now = time.time()
-            uptime = self._detectors_response['ctdet']['updatetime']
+            uptime = self._detectors_response[detector_name]['updatetime']
             delta_time = int(now - uptime)
             # _LOGGER.info("now=%s,uptime=%s------------------------delta_time =  %s",now, uptime ,delta_time)
             return delta_time
@@ -242,7 +265,6 @@ class MjpegCamera(Camera):
     def get_ctdet_attributes(self):
         matches = {}
         total_matches = 0
-
 
         if not self._detectors_response or self._detectors_response['ctdet']['status'] != 0:
             self._matches = matches
@@ -266,14 +288,28 @@ class MjpegCamera(Camera):
         self._matches = matches
         self._total_matches = total_matches
 
+    def add_coco_bbox(self, image ,bbox,color=(0,255,0)):
+        cv2.rectangle(image,
+                      (bbox['top'], bbox['left']),
+                      (bbox['bottom'], bbox['right']), color, 2)
+        return image
+
+    def add_coco_hp(self, image ,points, img_id='default'):
+        points = np.array(points, dtype=np.int32).reshape(self.num_joints, 2)
+        for j in range(self.num_joints):
+            cv2.circle(image,(points[j, 0], points[j, 1]), 3, self.colors_hp[j], -1)
+        for j, e in enumerate(self.edges):
+            if points[e].min() > 0:
+                cv2.line(image, (points[e[0], 0], points[e[0], 1]),
+                     (points[e[1], 0], points[e[1], 1]), self.ec[j], 2,
+                     lineType=cv2.LINE_AA)
+        return image
+
     def draw_bbox(self,image):
 
         if 'ctdet' in self._detectors_response and self.response_time_delta() < 3:
-
             results = self._detectors_response['ctdet']['detections']
-
             img_PIL = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-
             font = ImageFont.truetype('NotoSansCJK-Black.ttc',16)
             fillColor = (255,0,0)
             for bbox in results:
@@ -300,9 +336,7 @@ class MjpegCamera(Camera):
                 draw.text(position, str, font=font, fill=(255,0,0))
                 hight += self._font_hight
 
-
             image = cv2.cvtColor(np.asarray(img_PIL),cv2.COLOR_RGB2BGR)
-
             for bbox in results:
                 if bbox['confidence'] > self._confidence:
                     cv2.rectangle(image,
@@ -319,7 +353,7 @@ class MjpegCamera(Camera):
 
         start = time.time()
         await asyncio.sleep(random.randint(2,5))
-        _LOGGER.info("sleep: %s",time.time()-start)
+        # _LOGGER.info("sleep: %s",time.time()-start)
         # _LOGGER.warn("detector_task*******************")
 
         image = await self.async_camera_image()
@@ -330,53 +364,29 @@ class MjpegCamera(Camera):
         else:
 
             try:
-                # _LOGGER.info("will detect the image!!!,image.len=%s",len(image))
+                _LOGGER.info("will detect the image!!!,detect.url=%s,self._detector_name=%s",self._detect_url,self._detector_name)
+
                 response = self.doods.detect(image, detector_name=self._detector_name)
                 self._detectors_response[response['model']]= response
-                # _LOGGER.info("self._detectors_response=%s", self._detectors_response)
+                _LOGGER.info("self._detectors_response=%s", self._detectors_response)
 
                 #获取ctdet model 检测结果
-                self.get_ctdet_attributes()
+                if response['model'] =='ctdet':
+                    _LOGGER.info("response['model'] =='ctdet'")
+                    self.get_ctdet_attributes()
+                elif response['model'] =='multi_pose':
+
+                    _LOGGER.info("response['model'] =='multi_pose'")
+
 
             except Exception as e:
-                _LOGGER.error(" detector_task is failed !! %s", str(e))
+                # _LOGGER.error(" detector_task is failed !! %s", str(e))
                 _LOGGER.error(" detector_task is failed !! %s", traceback.print_exc())
 
-            # await asyncio.sleep(5)
-            # response = self.doods.detect(image, detector_name='multi_pose')
-            # self._detectors_response[response['model']]= response
-            # # _LOGGER.info("self._detectors_response=%s",self._detectors_response)
-            #
-            # nparry = np.fromstring(image,np.uint8)
-            # img = cv2.imdecode(nparry, 3)
-            #
-            #
-            # # _LOGGER.info("self._detectors_response=%s",self._detectors_response)
-            #
-            # results = self._detectors_response['ctdet']['detections']
-            # for bbox in results:
-            #     _LOGGER.info("bbox=%s",bbox)
-            #     if bbox['confidence'] > self._confidence:
-            #         cv2.rectangle(img,
-            #               (bbox['top'], bbox['left']),
-            #               (bbox['bottom'], bbox['right']), (255,0,0), 2)
-            #         cv2.putText(img, bbox['label'], (bbox['top'], bbox['left'] - 2),
-            #             3, 0.5, (0, 0, 0), thickness=1, lineType=cv2.LINE_AA)
-
-                # if bbox[4] > self.opt.vis_thresh:
-
-                    # if bbox[4] > self.opt.vis_thresh:
-
-            # cv2.rectangle(img,
-            #               (self._detectors_response[response['model']]['detections'][], bbox[1] - cat_size[1] - 2),
-            #               (bbox[0] + cat_size[0], bbox[1] - 2), c, -1)
-            # cv2.putText(img, txt, (bbox[0], bbox[1] - 2),
-            #     font, 0.5, (0, 0, 0), thickness=1, lineType=cv2.LINE_AA)
-            # cv2.imwrite('image_{}.jpg'.format(random.randint(1,6)),img)
 
     @property
     def device_state_attributes(self):
-        _LOGGER.info("device_state_attributes----->>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        # _LOGGER.info("device_state_attributes----->>>>>>>>>>>>>>>>>>>>>>>>>>>")
         return {
             ATTR_MATCHES: self._matches,
             ATTR_SUMMARY :{
@@ -433,8 +443,6 @@ class MjpegCamera(Camera):
         with closing(req) as response:
             return extract_image_from_mjpeg(response.iter_content(102400))
 
-
-
     async def handle_async_mjpeg_stream(self, request):
         """Generate an HTTP MJPEG stream from the camera."""
         # aiohttp don't support DigestAuth -> Fallback
@@ -444,8 +452,6 @@ class MjpegCamera(Camera):
         # connect to stream
         websession = async_get_clientsession(self.hass, verify_ssl=self._verify_ssl)
         stream_coro = websession.get(self._mjpeg_url, auth=self._auth)
-
-
         # return await async_aiohttp_proxy_web(self.hass, request, stream_coro)
         return await self.async_aiohttp_proxy_web(request, stream_coro)
 
@@ -468,15 +474,12 @@ class MjpegCamera(Camera):
         response.content_type = content_type
         await response.prepare(request)
         buffer = bytes()
-
         try:
-
             while True:
                 with async_timeout.timeout(timeout):
                     data = await stream.read(buffer_size)
                 if not data:
                         break
-
                 buffer += data
                 start = buffer.find(b"\xff\xd8")
                 end = buffer.find(b"\xff\xd9")
@@ -487,75 +490,45 @@ class MjpegCamera(Camera):
                     pil_img =  Image.open(io.BytesIO(bytearray(image)))
                     img_width, img_height = pil_img.size
 
-
-                    _LOGGER.info("img_width=%s, img_height=%s",img_width, img_height)
+                    # _LOGGER.info("img_width=%s, img_height=%s",img_width, img_height)
                     nparry = np.fromstring(image, np.uint8)
                     if len(nparry) > 0:
                         opencv_image = cv2.imdecode(nparry, 3)
-                        opencv_image = self.draw_bbox(opencv_image)
-                        image_file = 'stream_{}.jpg'.format(random.randint(1, 10))
+                        _LOGGER.info("%s",self._detector_name)
+                        if self._detector_name == 'ctdet':
+                            _LOGGER.info("async_aiohttp_proxy_stream--->self._detector_name == 'ctdet'")
+                            opencv_image = self.draw_bbox(opencv_image)
+                        elif self._detector_name == 'multi_pose':
+                            _LOGGER.info("self._detector_name == 'multi_pose' ")
+                            if 'multi_pose' in self._detectors_response and self.response_time_delta(detector_name=self._detector_name) < 3:
+
+                                detections = self._detectors_response['multi_pose']['detections']
+                                # _LOGGER.info("self._detector_name == 'multi_pose' %s ",detections)
+                                for detection in detections:
+                                    _LOGGER.info("async_aiohttp_proxy_stream--->detection = %s",detection)
+                                    bbox = detection['bbox']
+                                    keypoints = detection['keypoints']
+
+                                    if bbox['confidence'] > self._confidence:
+                                        opencv_image = self.add_coco_bbox(opencv_image,bbox)
+                                        opencv_image = self.add_coco_hp(opencv_image,keypoints)
+
+
+
+                        # image_file = 'stream_{}.jpg'.format(random.randint(1, 10))
                         # _LOGGER.info("write file =%s",image_file)
                         # cv2.imwrite(image_file, opencv_image)
-
                         img_param = [int(cv2.IMWRITE_JPEG_QUALITY), 95]
                         _, opencv_image = cv2.imencode('.jpg', opencv_image, img_param)
 
                         image = opencv_image.tobytes()
-
                         mjpeg = make_mjpeg_from_image(image)
-
                         await mjpeg_response_write(response,mjpeg)
 
-
-                    # if len(nparry) > 0:
-                    #     img = cv2.imdecode(nparry, 3)
-                    #     cv2.imwrite('stream_{}.jpg'.format(random.randint(1,10)), img)
-                    #     img_param = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
-                    #     _, mjpeg = cv2.imencode('.jpg', img, img_param)
-                    #
-                    #     mjpeg_bytes= mjpeg.tobytes()
-                    #     start = mjpeg_bytes.find(b"\xff\xd8")
-                    #     end = mjpeg_bytes.find(b"\xff\xd9")
-                        # _LOGGER.info("new jpg ,mjpeg.len=%s, mjpeg.len=%s,mjpeg=【start】=%s,mjpeg=【end】=%s", len(mjpeg),len(mjpeg),start, end)
-
-
-
-
-
-                # await response.write(data)
-
-                    # _LOGGER.info("new data ,data.len=%s", len(data))
-                    # buffer += data
-                    # start = buffer.find(b"\xff\xd8")
-                    # end = buffer.find(b"\xff\xd9")
-                    #
-                    # if start != -1 and end != -1:
-                    #     jpg = buffer[start:end+2]
-                    #     _LOGGER.info("new jpg ,jpg.len=%s", len(jpg))
-                    #     _LOGGER.info("buffer[0]=%X,buffer[-1]=%X,buffer[-2]=%X,buffer[-3]=%X",buffer[start],buffer[end+2-1],buffer[end+2-2],buffer[end+2-3])
-                    #     if len(jpg) > 0:
-                    #         _LOGGER.info("jpg[0]=%X,jpg[-1]=%X,jpg[-2]=%X,jpg[-3]=%X", jpg[0], jpg[-1],jpg[-2],jpg[-3])
-                    #     # img = Image.open(io.BytesIO(bytearray(jpg)))
-                    #     # io.BytesIO(bytearray(jpg))
-                    #     # nparry = np.fromstring(jpg,np.uint8)
-                    #     # if len(nparry) > 0 and flag%100 ==0:
-                    #     #     img = cv2.imdecode(nparry, 3)
-                    #     #     cv2.imwrite('stream_{}.jpg'.format(flag),img)
-                    #     #     flag += 1
-                    #     #
-                    #     buffer = buffer[end+2:]
-                    #     # _LOGGER.error("buffer.len=%s",len(buffer))
-                    #     _LOGGER.error("new frame")
-
-                        # await response.write(jpg)
-
-            # _LOGGER.error("response headers %s",response.headers)
         except (asyncio.TimeoutError, aiohttp.ClientError):
             # Something went wrong fetching data, closed connection
             pass
-
         return response
-
 
     async def async_aiohttp_proxy_web(
             self,
@@ -569,19 +542,15 @@ class MjpegCamera(Camera):
         try:
             with async_timeout.timeout(timeout):
                 req = await web_coro
-
         except asyncio.CancelledError:
             # The user cancelled the request
             return None
-
         except asyncio.TimeoutError as err:
         # Timeout trying to start the web request
             raise HTTPGatewayTimeout() from err
-
         except aiohttp.ClientError as err:
         # Something went wrong with the connection
             raise HTTPBadGateway() from err
-
         try:
             return await self.async_aiohttp_proxy_stream(
                 request, req.content, req.headers.get(CONTENT_TYPE)
@@ -589,11 +558,8 @@ class MjpegCamera(Camera):
         finally:
             req.close()
 
-
-
 class NoHeaderErrorFilter(logging.Filter):
     """Filter out urllib3 Header Parsing Errors due to a urllib3 bug."""
-
     def filter(self, record):
         """Filter out Header Parsing Errors."""
         return "Failed to parse headers" not in record.getMessage()
