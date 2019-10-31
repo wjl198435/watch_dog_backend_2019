@@ -1,1 +1,46 @@
-purge_keep_days: 1
+---
+
+
+# sudo -u homeassistant -H -s
+# source /srv/homeassistant/bin/activate
+#  pip3 install mysqlclient
+#  GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'password' WITH GRANT OPTION;
+#  --格式如下
+#  GRANT ALL PRIVILEGES ON *.* TO 'user'@'remoteip' IDENTIFIED BY 'password' WITH GRANT OPTION;
+#  --更新权限
+#  FLUSH PRIVILEGES;
+
+#  nano /etc/mysql/mariadb.conf.d/50-server.cnf
+#
+#打开文件后有一段如下的内容:
+#
+## Instead of skip-networking the default is now to listen only on
+## localhost which is more compatible and is not less secure.
+## bind-address            = 127.0.0.1
+
+#  pip install pymysql
+
+db_url: !secret recorder_db_url
+exclude:
+  domains:
+    - media_player
+    - weblink
+    - zwave
+    - weather
+  entities:
+    - sensor.front_door_access_control
+    - sensor.front_door_alarm_level
+    - sensor.front_door_alarm_type
+    - sensor.front_door_sourcenodeid
+    - sensor.front_door_system
+    - sensor.garage_door_access_control
+    - sensor.garage_door_alarm_level
+    - sensor.garage_door_alarm_type
+    - sensor.garage_door_sourcenodeid
+    - sensor.garage_door_system
+    - sun.sun
+    - weather.jia
+    - sensor.example_temperature
+    - sensor.example_temperature_2
+purge_interval: 2
+purge_keep_days: 5

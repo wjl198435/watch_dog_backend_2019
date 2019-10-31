@@ -352,7 +352,7 @@ class MjpegCamera(Camera):
     async def detector_task(self):
 
         start = time.time()
-        await asyncio.sleep(random.randint(2,5))
+        await asyncio.sleep(random.randint(1,2))
         # _LOGGER.info("sleep: %s",time.time()-start)
         # _LOGGER.warn("detector_task*******************")
 
