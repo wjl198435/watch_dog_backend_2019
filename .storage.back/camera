@@ -1,0 +1,9 @@
+{
+    "data": {
+        "camera.onvif_camera": {
+            "preload_stream": true
+        }
+    },
+    "key": "camera",
+    "version": 1
+}

@@ -1,0 +1,158 @@
+{
+    "data": {
+        "config": {
+            "title": "\u7267\u517b\u72ac",
+            "views": [
+                {
+                    "badges": [],
+                    "cards": [
+                        {
+                            "entity": "weather.jia",
+                            "name": "\u676d\u5dde",
+                            "type": "weather-forecast"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "input_boolean.school_mode"
+                                },
+                                {
+                                    "entity": "input_boolean.alert_mode"
+                                },
+                                {
+                                    "entity": "input_boolean.speech_notifications"
+                                },
+                                {
+                                    "entity": "input_boolean.text_notifications"
+                                },
+                                {
+                                    "entity": "input_boolean.guest_mode"
+                                }
+                            ],
+                            "title": "\u60c5\u666f\u6a21\u5f0f",
+                            "type": "entities"
+                        }
+                    ],
+                    "path": "",
+                    "theme": "\u9ed1-\u7eff",
+                    "title": "\u5168\u5c40\u76d1\u63a7"
+                },
+                {
+                    "badges": [],
+                    "cards": [
+                        {
+                            "cards": [
+                                {
+                                    "cards": [
+                                        {
+                                            "entity": "sensor.house1_room10_temperature",
+                                            "max": 50,
+                                            "min": -10,
+                                            "name": "\u6e29\u5ea6",
+                                            "severity": {
+                                                "green": 20,
+                                                "red": 30,
+                                                "yellow": 15
+                                            },
+                                            "type": "gauge"
+                                        },
+                                        {
+                                            "entity": "sensor.house1_room15_humidity",
+                                            "max": 100,
+                                            "min": 0,
+                                            "name": "\u6e7f\u5ea6",
+                                            "severity": {
+                                                "green": 40,
+                                                "red": 80,
+                                                "yellow": 20
+                                            },
+                                            "type": "gauge"
+                                        }
+                                    ],
+                                    "type": "horizontal-stack"
+                                },
+                                {
+                                    "cards": [
+                                        {
+                                            "entity": "sensor.house1_room13_illuminance",
+                                            "max": 5000,
+                                            "min": 0,
+                                            "name": "\u4eae\u5ea6",
+                                            "severity": {
+                                                "green": 2000,
+                                                "red": 4000,
+                                                "yellow": 3000
+                                            },
+                                            "type": "gauge"
+                                        },
+                                        {
+                                            "entity": "sensor.house1_room15_aqi",
+                                            "max": 1000,
+                                            "min": 0,
+                                            "name": "PM2.5",
+                                            "severity": {
+                                                "green": 100,
+                                                "red": 800,
+                                                "yellow": 500
+                                            },
+                                            "type": "gauge"
+                                        },
+                                        {
+                                            "entity": "sensor.house1_room14_nh3_2",
+                                            "max": 1000,
+                                            "min": 0,
+                                            "name": "\u6c28\u6c14",
+                                            "severity": {
+                                                "green": 100,
+                                                "red": 800,
+                                                "yellow": 500
+                                            },
+                                            "type": "gauge"
+                                        }
+                                    ],
+                                    "type": "horizontal-stack"
+                                },
+                                {
+                                    "cards": [
+                                        {
+                                            "camera_view": "live",
+                                            "entity": "camera.mu_biao_jian_ce",
+                                            "image": "https://www.home-assistant.io/images/merchandise/shirt-frontpage.png",
+                                            "type": "picture-entity"
+                                        },
+                                        {
+                                            "camera_view": "live",
+                                            "entity": "camera.zi_tai_jian_ce",
+                                            "image": "https://www.home-assistant.io/images/merchandise/shirt-frontpage.png",
+                                            "type": "picture-entity"
+                                        }
+                                    ],
+                                    "type": "horizontal-stack"
+                                }
+                            ],
+                            "type": "vertical-stack"
+                        }
+                    ],
+                    "path": "default_view",
+                    "title": "\u6211\u7684\u519c\u573a-house1"
+                },
+                {
+                    "badges": [],
+                    "cards": [
+                        {
+                            "entity": "sensor.house2_room12_aqi",
+                            "max": 2500,
+                            "min": 0,
+                            "name": "pm2.5",
+                            "theme": "default",
+                            "type": "gauge"
+                        }
+                    ],
+                    "title": "\u6211\u7684\u519c\u573ahouse2"
+                }
+            ]
+        }
+    },
+    "key": "lovelace",
+    "version": 1
+}

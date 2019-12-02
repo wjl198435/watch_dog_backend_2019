@@ -163,4 +163,39 @@ tts:
 
 group: !include groups.yaml
 automation: !include_dir_merge_list conf/automations
-script: !include scripts.yaml
+#script: !include scripts.
+loveace:
+  mode: yaml
+
+
+
+climate:
+  - platform: mqtt
+    name: Study
+    modes:
+      - "off"
+      - "cool"
+      - "fan_only"
+      - "heat"
+      - "auto"
+      - "dry"
+    swing_modes:
+      - "on"
+      - "off"
+    fan_modes:
+      - "high"
+      - "medium"
+      - "low"
+    min_temp: 15
+    max_temp: 30
+    temp_step: 1
+    power_command_topic: "study/ac/power/set"
+    mode_command_topic: "study/ac/mode/set"
+    temperature_command_topic: "study/ac/temperature/set"
+    fan_mode_command_topic: "study/ac/fan/set"
+    swing_mode_command_topic: "study/ac/swing/set"
+    precision: 1.0
+
+
+
+

@@ -1,0 +1,36 @@
+{
+    "data": {
+        "entries": [
+            {
+                "connection_class": "local_push",
+                "data": {},
+                "domain": "mqtt",
+                "entry_id": "b50073b4f1854bdea97edbac67b281cd",
+                "options": {},
+                "source": "import",
+                "system_options": {
+                    "disable_new_entities": false
+                },
+                "title": "configuration.yaml",
+                "version": 1
+            },
+            {
+                "connection_class": "cloud_poll",
+                "data": {
+                    "track_home": true
+                },
+                "domain": "met",
+                "entry_id": "6a4d0e17460a416fb578a4a48b535a3b",
+                "options": {},
+                "source": "onboarding",
+                "system_options": {
+                    "disable_new_entities": false
+                },
+                "title": "Home",
+                "version": 1
+            }
+        ]
+    },
+    "key": "core.config_entries",
+    "version": 1
+}

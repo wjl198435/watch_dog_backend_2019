@@ -1,0 +1,289 @@
+{
+    "data": [
+        {
+            "last_seen": "2019-12-02T00:53:36.810565+00:00",
+            "state": {
+                "attributes": {
+                    "friendly_name": "\u8bed\u97f3\u901a\u77e5",
+                    "icon": "mdi:speaker-wireless"
+                },
+                "context": {
+                    "id": "b00157515da2471cad975025d0d65569",
+                    "parent_id": null,
+                    "user_id": null
+                },
+                "entity_id": "input_boolean.speech_notifications",
+                "last_changed": "2019-12-02T00:53:02.488237+00:00",
+                "last_updated": "2019-12-02T00:53:02.488237+00:00",
+                "state": "on"
+            }
+        },
+        {
+            "last_seen": "2019-12-02T00:53:36.810565+00:00",
+            "state": {
+                "attributes": {
+                    "friendly_name": "\u80b2\u80a5\u6a21\u5f0f"
+                },
+                "context": {
+                    "id": "3ca937e6ec534f24b30fff6225380b52",
+                    "parent_id": null,
+                    "user_id": null
+                },
+                "entity_id": "input_boolean.work",
+                "last_changed": "2019-12-02T00:53:02.488414+00:00",
+                "last_updated": "2019-12-02T00:53:02.488414+00:00",
+                "state": "off"
+            }
+        },
+        {
+            "last_seen": "2019-12-02T00:53:36.810565+00:00",
+            "state": {
+                "attributes": {
+                    "friendly_name": "Home Stats"
+                },
+                "context": {
+                    "id": "65367ecf86fd43b2a93e973cffd43b3e",
+                    "parent_id": null,
+                    "user_id": null
+                },
+                "entity_id": "input_boolean.home_stats",
+                "last_changed": "2019-12-02T00:53:02.488545+00:00",
+                "last_updated": "2019-12-02T00:53:02.488545+00:00",
+                "state": "off"
+            }
+        },
+        {
+            "last_seen": "2019-12-02T00:53:36.810565+00:00",
+            "state": {
+                "attributes": {
+                    "friendly_name": "\u6587\u5b57\u901a\u77e5",
+                    "icon": "mdi:cellphone-wireless"
+                },
+                "context": {
+                    "id": "82996a14f52f409bba1d3b0150a33046",
+                    "parent_id": null,
+                    "user_id": null
+                },
+                "entity_id": "input_boolean.text_notifications",
+                "last_changed": "2019-12-02T00:53:02.488687+00:00",
+                "last_updated": "2019-12-02T00:53:02.488687+00:00",
+                "state": "on"
+            }
+        },
+        {
+            "last_seen": "2019-12-02T00:53:36.810565+00:00",
+            "state": {
+                "attributes": {
+                    "friendly_name": "responsibilities"
+                },
+                "context": {
+                    "id": "5d7a9e2abde64c7eacd11a4259248e05",
+                    "parent_id": null,
+                    "user_id": null
+                },
+                "entity_id": "input_boolean.responsibilities",
+                "last_changed": "2019-12-02T00:53:02.488838+00:00",
+                "last_updated": "2019-12-02T00:53:02.488838+00:00",
+                "state": "off"
+            }
+        },
+        {
+            "last_seen": "2019-12-02T00:53:36.810565+00:00",
+            "state": {
+                "attributes": {
+                    "friendly_name": "\u591c\u665a\u6a21\u5f0f"
+                },
+                "context": {
+                    "id": "9f1977ea17e04312913b96563d3fc342",
+                    "parent_id": null,
+                    "user_id": null
+                },
+                "entity_id": "input_boolean.good_night",
+                "last_changed": "2019-12-02T00:53:02.488967+00:00",
+                "last_updated": "2019-12-02T00:53:02.488967+00:00",
+                "state": "off"
+            }
+        },
+        {
+            "last_seen": "2019-12-02T00:53:36.810565+00:00",
+            "state": {
+                "attributes": {
+                    "friendly_name": "\u901a\u98ce\u6a21\u5f0f",
+                    "icon": "mdi:fan"
+                },
+                "context": {
+                    "id": "a6c568deb5874cf58329461811a276e7",
+                    "parent_id": null,
+                    "user_id": null
+                },
+                "entity_id": "input_boolean.guest_mode",
+                "last_changed": "2019-12-02T00:53:02.489082+00:00",
+                "last_updated": "2019-12-02T00:53:02.489082+00:00",
+                "state": "off"
+            }
+        },
+        {
+            "last_seen": "2019-12-02T00:53:36.810565+00:00",
+            "state": {
+                "attributes": {
+                    "friendly_name": "\u591c\u665a\u6a21\u5f0f"
+                },
+                "context": {
+                    "id": "050e17b86ac74625b49e6008364020ef",
+                    "parent_id": null,
+                    "user_id": null
+                },
+                "entity_id": "input_boolean.good_morning",
+                "last_changed": "2019-12-02T00:53:02.489189+00:00",
+                "last_updated": "2019-12-02T00:53:02.489189+00:00",
+                "state": "off"
+            }
+        },
+        {
+            "last_seen": "2019-12-02T00:53:36.810565+00:00",
+            "state": {
+                "attributes": {
+                    "friendly_name": "\u52a0\u70ed\u6a21\u5f0f",
+                    "icon": "mdi:weather-sunny"
+                },
+                "context": {
+                    "id": "fed51bf527854aac9c07367248e1048e",
+                    "parent_id": null,
+                    "user_id": null
+                },
+                "entity_id": "input_boolean.school_mode",
+                "last_changed": "2019-12-02T00:53:02.489325+00:00",
+                "last_updated": "2019-12-02T00:53:02.489325+00:00",
+                "state": "on"
+            }
+        },
+        {
+            "last_seen": "2019-12-02T00:53:36.810565+00:00",
+            "state": {
+                "attributes": {
+                    "friendly_name": "\u8fdb\u98df\u6a21\u5f0f"
+                },
+                "context": {
+                    "id": "0a55d192b1994cc788b3809a99fd5b0a",
+                    "parent_id": null,
+                    "user_id": null
+                },
+                "entity_id": "input_boolean.meal_time",
+                "last_changed": "2019-12-02T00:53:02.489448+00:00",
+                "last_updated": "2019-12-02T00:53:02.489448+00:00",
+                "state": "off"
+            }
+        },
+        {
+            "last_seen": "2019-12-02T00:53:36.810565+00:00",
+            "state": {
+                "attributes": {
+                    "friendly_name": "\u62a5\u8b66\u6a21\u5f0f",
+                    "icon": "mdi:alert-octagram"
+                },
+                "context": {
+                    "id": "7d066ca83e9349e9ad8411e81e3ea0ba",
+                    "parent_id": null,
+                    "user_id": null
+                },
+                "entity_id": "input_boolean.alert_mode",
+                "last_changed": "2019-12-02T00:53:02.489565+00:00",
+                "last_updated": "2019-12-02T00:53:02.489565+00:00",
+                "state": "off"
+            }
+        },
+        {
+            "last_seen": "2019-12-02T00:53:36.810565+00:00",
+            "state": {
+                "attributes": {
+                    "friendly_name": "\u8fd0\u52a8\u6a21\u5f0f"
+                },
+                "context": {
+                    "id": "5f50a83102ff43b0aa982621e84817a1",
+                    "parent_id": null,
+                    "user_id": null
+                },
+                "entity_id": "input_boolean.tv_time",
+                "last_changed": "2019-12-02T00:53:02.489708+00:00",
+                "last_updated": "2019-12-02T00:53:02.489708+00:00",
+                "state": "off"
+            }
+        },
+        {
+            "last_seen": "2019-12-02T00:53:36.810565+00:00",
+            "state": {
+                "attributes": {
+                    "editable": true,
+                    "friendly_name": "jack",
+                    "id": "abb9e35fc5af472aaf4113736bbcc247",
+                    "user_id": "ce64eba099d74b7fb80dae85bd8aaa2f"
+                },
+                "context": {
+                    "id": "a52c395fb05f4e619a49073ca0a1b109",
+                    "parent_id": null,
+                    "user_id": null
+                },
+                "entity_id": "person.jack",
+                "last_changed": "2019-12-02T00:53:02.489863+00:00",
+                "last_updated": "2019-12-02T00:53:08.088005+00:00",
+                "state": "unknown"
+            }
+        },
+        {
+            "last_seen": "2019-12-02T00:53:36.810565+00:00",
+            "state": {
+                "attributes": {
+                    "assumed_state": true,
+                    "friendly_name": "MQTT Light",
+                    "supported_features": 0
+                },
+                "context": {
+                    "id": "f4d6bceb652542378a727f5dd7955efd",
+                    "parent_id": null,
+                    "user_id": null
+                },
+                "entity_id": "light.mqtt_light",
+                "last_changed": "2019-12-02T00:53:02.502155+00:00",
+                "last_updated": "2019-12-02T00:53:02.502155+00:00",
+                "state": "off"
+            }
+        },
+        {
+            "last_seen": "2019-12-02T00:53:36.810565+00:00",
+            "state": {
+                "attributes": {
+                    "friendly_name": "Set HA theme for day and night",
+                    "last_triggered": "2019-12-02T00:53:08.100138+00:00"
+                },
+                "context": {
+                    "id": "e479eb12da2a4fcea50e81f89ddc46ed",
+                    "parent_id": null,
+                    "user_id": null
+                },
+                "entity_id": "automation.set_ha_theme_for_day_and_night",
+                "last_changed": "2019-12-02T00:53:02.502998+00:00",
+                "last_updated": "2019-12-02T00:53:08.100241+00:00",
+                "state": "on"
+            }
+        },
+        {
+            "last_seen": "2019-12-02T00:53:36.810565+00:00",
+            "state": {
+                "attributes": {
+                    "friendly_name": "Demo Switch"
+                },
+                "context": {
+                    "id": "c2a4dded9b2742dbb87c0200749e0019",
+                    "parent_id": null,
+                    "user_id": null
+                },
+                "entity_id": "switch.demo_switch",
+                "last_changed": "2019-12-02T00:53:02.532873+00:00",
+                "last_updated": "2019-12-02T00:53:02.532873+00:00",
+                "state": "off"
+            }
+        }
+    ],
+    "key": "core.restore_state",
+    "version": 1
+}
