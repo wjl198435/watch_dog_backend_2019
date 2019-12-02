@@ -1,0 +1,26 @@
+extends: 
+  - 'plugin:@typescript-eslint/recommended'
+  - 'prettier/@typescript-eslint'
+  - 'plugin:prettier/recommended'
+parser: "@typescript-eslint/parser"
+rules:
+  no-else-return: "off"
+  no-underscore-dangle: "off"
+  nonblock-statement-body-position: "off"
+  curly: "off"
+  no-return-assign: "off"
+  consistent-return: "off"
+  no-mixed-operators: "off"
+  class-methods-use-this: "off"
+  no-nested-ternary: "off"
+  camelcase: "off"
+  "@typescript-eslint/camelcase": "off"
+  no-unused-vars: "off"
+  quotes: "off"
+  comma-dangle: "off"
+  import/no-unresolved: "off"
+  import/prefer-default-export: "off"
+globals:
+  window: true
+  Event: true
+  customElements: true

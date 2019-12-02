@@ -1,0 +1,61 @@
+{
+  "name": "better-thermostat",
+  "version": "1.1.0",
+  "description": "Lovelace better-thermostat",
+  "keywords": [
+    "home-assistant",
+    "homeassistant",
+    "hass",
+    "automation",
+    "lovelace",
+    "custom-cards"
+  ],
+  "module": "better-thermostat.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/findingjohnny/lovelace-better-thermostat.git"
+  },
+  "author": "Johnny Bretz <bretzjohnny@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@material/mwc-checkbox": "^0.8.0",
+    "@material/mwc-icon": "^0.8.0",
+    "@material/mwc-textfield": "^0.8.0",
+    "@thomasloven/round-slider": "^0.2.2",
+    "custom-card-helpers": "^1.0.8",
+    "home-assistant-js-websocket": "^3.4.0",
+    "lit-element": "^2.0.1",
+    "webpack": "^4.41.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/plugin-proposal-decorators": "^7.4.0",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.4.1",
+    "eslint": "^5.14.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^6.2.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "prettier": "^1.16.4",
+    "rollup": "^1.2.3",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-node-resolve": "^4.0.1",
+    "rollup-plugin-terser": "^4.0.4",
+    "rollup-plugin-typescript2": "^0.19.2",
+    "rollup-plugin-uglify": "^6.0.2",
+    "typescript": "^3.3.3333"
+  },
+  "scripts": {
+    "start": "rollup -c --watch",
+    "build": "npm run lint && npm run rollup",
+    "lint": "eslint src/*.ts",
+    "rollup": "rollup -c"
+  },
+  "bugs": {
+    "url": "https://github.com/findingjohnny/lovelace-better-thermostat/issues"
+  },
+  "homepage": "https://github.com/findingjohnny/lovelace-better-thermostat#readme",
+  "main": "rollup.config.js"
+}
