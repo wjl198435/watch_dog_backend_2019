@@ -1,0 +1,54 @@
+- platform: mqtt
+  name: room4
+  initial: 20
+  modes:
+    - "off"
+    - "cool"
+    - "fan_only"
+    - "heat"
+    - "auto"
+    - "dry"
+  swing_modes:
+    - "on"
+    - "off"
+  fan_modes:
+    - "high"
+    - "medium"
+    - "low"
+  min_temp: 15
+  max_temp: 30
+  temp_step: 1
+  power_command_topic: "room4/ac/power/set"
+  mode_command_topic: "room4/ac/mode/set"
+  temperature_command_topic: "room4/ac/temperature/set"
+  fan_mode_command_topic: "room4/ac/fan/set"
+  swing_mode_command_topic: "room4/ac/swing/set"
+  precision: 1.0
+
+
+- platform: mqtt
+  name: room5
+  initial: 20
+  modes:
+    - "off"
+    - "cool"
+    - "fan_only"
+    - "heat"
+    - "auto"
+    - "dry"
+  swing_modes:
+    - "on"
+    - "off"
+  fan_modes:
+    - "high"
+    - "medium"
+    - "low"
+  min_temp: 15
+  max_temp: 30
+  temp_step: 1
+  power_command_topic: "room5/ac/power/set"
+  mode_command_topic: "room5/ac/mode/set"
+  temperature_command_topic: "room5/ac/temperature/set"
+  fan_mode_command_topic: "room5/ac/fan/set"
+  swing_mode_command_topic: "room5/ac/swing/set"
+  precision: 1.0

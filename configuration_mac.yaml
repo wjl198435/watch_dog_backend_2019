@@ -141,12 +141,12 @@ weather:
 
 #  需要启动 sudo service mosquitto start
 mqtt: !include conf/mosquitto.yaml
-switch: !include conf/platforms/mqtt/switches.yaml
-light:  !include conf/platforms/mqtt/lights.yaml
-sensor: !include_dir_merge_list conf/platforms/sensors/
-fan: !include conf/platforms/mqtt/fans.yaml
-binary_sensor: !include binary_sensors.yaml
-input_boolean: !include_dir_merge_named input_boolean
+#switch: !include conf/platforms/mqtt/switches.yaml
+#light:  !include conf/platforms/mqtt/lights.yaml
+#sensor: !include_dir_merge_list conf/platforms/sensors/
+#fan: !include conf/platforms/mqtt/fans.yaml
+#binary_sensor: !include binary_sensors.yaml
+#input_boolean: !include_dir_merge_named input_boolean
 
 
 
@@ -168,62 +168,7 @@ loveace:
   mode: yaml
 
 
-
-climate:
-  - platform: mqtt
-    name: Study
-    initial: 20
-    modes:
-      - "off"
-      - "cool"
-      - "fan_only"
-      - "heat"
-      - "auto"
-      - "dry"
-    swing_modes:
-      - "on"
-      - "off"
-    fan_modes:
-      - "high"
-      - "medium"
-      - "low"
-    min_temp: 15
-    max_temp: 30
-    temp_step: 1
-    power_command_topic: "study/ac/power/set"
-    mode_command_topic: "study/ac/mode/set"
-    temperature_command_topic: "study/ac/temperature/set"
-    fan_mode_command_topic: "study/ac/fan/set"
-    swing_mode_command_topic: "study/ac/swing/set"
-    precision: 1.0
-
-
-  - platform: mqtt
-    name: Test
-    initial: 20
-    modes:
-      - "off"
-      - "cool"
-      - "fan_only"
-      - "heat"
-      - "auto"
-      - "dry"
-    swing_modes:
-      - "on"
-      - "off"
-    fan_modes:
-      - "high"
-      - "medium"
-      - "low"
-    min_temp: 15
-    max_temp: 30
-    temp_step: 1
-    power_command_topic: "study/ac/power/set"
-    mode_command_topic: "study/ac/mode/set"
-    temperature_command_topic: "study/ac/temperature/set"
-    fan_mode_command_topic: "study/ac/fan/set"
-    swing_mode_command_topic: "study/ac/swing/set"
-    precision: 1.0
+climate: !include_dir_merge_list conf/climates
 
 
 
