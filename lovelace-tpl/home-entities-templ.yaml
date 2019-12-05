@@ -1,0 +1,26 @@
+      - entities:
+        - entity: sensor.house1_room9_humidity
+          name: 温度
+        - entity: sensor.house1_room9_illuminance
+          name: 亮度
+        - entity: sensor.house1_room9_nh3
+          name: 氨气
+        - entity: sensor.house1_room9_temperature
+          name: 温度
+        - entity: sensor.house1_room9_pm25
+          name: pm2.5
+        - entity: climate.house1_room9
+          name: 空调
+        - entity: fan.house1_room9
+          name: 风扇
+        - entity: light.house1_room9
+          name: 灯光
+        - entity: switch.house1_room9_cool
+          name: 制冷开关
+        - entity: switch.house1_room9_heater
+          name: 加热开关
+        - entity: switch.house1_room9_switch
+          name: 开关
+        show_header_toggle: false
+        title: house1_room9
+        type: entities

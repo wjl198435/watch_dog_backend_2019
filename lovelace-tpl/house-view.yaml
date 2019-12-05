@@ -1,0 +1,275 @@
+  - badges: []
+    cards:
+      - cards:
+          - aspect_ratio: 60%
+            columns: 3
+            entity: climate.house1_room1
+            name: room1
+            theme: 明亮蓝
+            type: thermostat
+          - entities:
+              - entity: sensor.house1_room1_temperature
+                name: 温度
+              - entity: sensor.house1_room1_humidity
+                name: 湿度
+              - entity: sensor.house1_room1_pm25
+                name: PM2.5
+              - entity: sensor.house1_room1_illuminance
+                name: 亮度
+              - entity: sensor.house1_room1_nh3
+                name: 氨气
+            theme: 灰-绿
+            type: glance
+          - aspect_ratio: 60%
+            camera_image: camera.zi_tai_jian_ce
+            camera_view: live
+            entities:
+              - entity: switch.house1_room1_switch
+              - entity: light.house1_room1
+            image: >-
+              https://www.home-assistant.io/images/merchandise/shirt-frontpage.png
+            type: picture-glance
+        type: vertical-stack
+      - cards:
+          - aspect_ratio: 60%
+            columns: 3
+            entity: climate.house1_room2
+            name: room2
+            theme: 明亮蓝
+            type: thermostat
+          - entities:
+              - entity: sensor.house1_room2_temperature
+                name: 温度
+              - entity: sensor.house1_room2_humidity
+                name: 湿度
+              - entity: sensor.house1_room2_pm25
+                name: PM2.5
+              - entity: sensor.house1_room2_illuminance
+                name: 亮度
+              - entity: sensor.house1_room2_nh3
+                name: 氨气
+            theme: 灰-绿
+            type: glance
+          - aspect_ratio: 60%
+            camera_image: camera.zi_tai_jian_ce
+            camera_view: live
+            entities:
+              - entity: switch.house1_room2_switch
+              - entity: light.house1_room2
+            image: >-
+              https://www.home-assistant.io/images/merchandise/shirt-frontpage.png
+            type: picture-glance
+        type: vertical-stack
+      - cards:
+          - aspect_ratio: 60%
+            columns: 3
+            entity: climate.house1_room3
+            name: room3
+            theme: 明亮蓝
+            type: thermostat
+          - entities:
+              - entity: sensor.house1_room3_temperature
+                name: 温度
+              - entity: sensor.house1_room3_humidity
+                name: 湿度
+              - entity: sensor.house1_room3_pm25
+                name: PM2.5
+              - entity: sensor.house1_room3_illuminance
+                name: 亮度
+              - entity: sensor.house1_room3_nh3
+                name: 氨气
+            theme: 灰-绿
+            type: glance
+          - aspect_ratio: 60%
+            camera_image: camera.zi_tai_jian_ce
+            camera_view: live
+            entities:
+              - entity: switch.house1_room3_switch
+              - entity: light.house1_room3
+            image: >-
+              https://www.home-assistant.io/images/merchandise/shirt-frontpage.png
+            type: picture-glance
+        type: vertical-stack
+      - cards:
+          - aspect_ratio: 60%
+            columns: 3
+            entity: climate.house1_room4
+            name: room4
+            theme: 明亮蓝
+            type: thermostat
+          - entities:
+              - entity: sensor.house1_room4_temperature
+                name: 温度
+              - entity: sensor.house1_room4_humidity
+                name: 湿度
+              - entity: sensor.house1_room4_pm25
+                name: PM2.5
+              - entity: sensor.house1_room4_illuminance
+                name: 亮度
+              - entity: sensor.house1_room4_nh3
+                name: 氨气
+            theme: 灰-绿
+            type: glance
+          - aspect_ratio: 60%
+            camera_image: camera.zi_tai_jian_ce
+            camera_view: live
+            entities:
+              - entity: switch.house1_room4_switch
+              - entity: light.house1_room4
+            image: >-
+              https://www.home-assistant.io/images/merchandise/shirt-frontpage.png
+            type: picture-glance
+        type: vertical-stack
+      - cards:
+          - aspect_ratio: 60%
+            columns: 3
+            entity: climate.house1_room5
+            name: room5
+            theme: 明亮蓝
+            type: thermostat
+          - entities:
+              - entity: sensor.house1_room5_temperature
+                name: 温度
+              - entity: sensor.house1_room5_humidity
+                name: 湿度
+              - entity: sensor.house1_room5_pm25
+                name: PM2.5
+              - entity: sensor.house1_room5_illuminance
+                name: 亮度
+              - entity: sensor.house1_room5_nh3
+                name: 氨气
+            theme: 灰-绿
+            type: glance
+          - aspect_ratio: 60%
+            camera_image: camera.zi_tai_jian_ce
+            camera_view: live
+            entities:
+              - entity: switch.house1_room5_switch
+              - entity: light.house1_room5
+            image: >-
+              https://www.home-assistant.io/images/merchandise/shirt-frontpage.png
+            type: picture-glance
+        type: vertical-stack
+      - cards:
+          - aspect_ratio: 60%
+            columns: 3
+            entity: climate.house1_room6
+            name: room6
+            theme: 明亮蓝
+            type: thermostat
+          - entities:
+              - entity: sensor.house1_room6_temperature
+                name: 温度
+              - entity: sensor.house1_room6_humidity
+                name: 湿度
+              - entity: sensor.house1_room6_pm25
+                name: PM2.5
+              - entity: sensor.house1_room6_illuminance
+                name: 亮度
+              - entity: sensor.house1_room6_nh3
+                name: 氨气
+            theme: 灰-绿
+            type: glance
+          - aspect_ratio: 60%
+            camera_image: camera.zi_tai_jian_ce
+            camera_view: live
+            entities:
+              - entity: switch.house1_room6_switch
+              - entity: light.house1_room6
+            image: >-
+              https://www.home-assistant.io/images/merchandise/shirt-frontpage.png
+            type: picture-glance
+        type: vertical-stack
+      - cards:
+          - aspect_ratio: 60%
+            columns: 3
+            entity: climate.house1_room7
+            name: room7
+            theme: 明亮蓝
+            type: thermostat
+          - entities:
+              - entity: sensor.house1_room7_temperature
+                name: 温度
+              - entity: sensor.house1_room7_humidity
+                name: 湿度
+              - entity: sensor.house1_room7_pm25
+                name: PM2.5
+              - entity: sensor.house1_room7_illuminance
+                name: 亮度
+              - entity: sensor.house1_room7_nh3
+                name: 氨气
+            theme: 灰-绿
+            type: glance
+          - aspect_ratio: 60%
+            camera_image: camera.zi_tai_jian_ce
+            camera_view: live
+            entities:
+              - entity: switch.house1_room7_switch
+              - entity: light.house1_room7
+            image: >-
+              https://www.home-assistant.io/images/merchandise/shirt-frontpage.png
+            type: picture-glance
+        type: vertical-stack
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
