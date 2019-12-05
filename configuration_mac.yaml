@@ -101,13 +101,13 @@ camera:
     detector: multi_pose
     detector_url: http://localhost:8088
     mjpeg_url: !secret motion_camera_url1
-    name: 目标检测
+    name: house1_room1_pose
 
   - platform: mjpeg
     detector: ctdet
     detector_url: http://localhost:8088
     mjpeg_url: !secret motion_camera_url2
-    name: 姿态检测
+    name: house1_room1_ctdet
 
 #  - platform: ffmpeg
 #    name: ezviz1
