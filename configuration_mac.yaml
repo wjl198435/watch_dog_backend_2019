@@ -110,7 +110,7 @@ camera:
     name: house1_room1_ctdet
   - platform: local_file
     name: camera_image
-    file_path: /home/homeassistant/stream_0.jpg 
+    file_path: /home/jack/Videos/ctdet/pig_person5_out.avi 
 
 #  - platform: ffmpeg
 #    name: ezviz1
