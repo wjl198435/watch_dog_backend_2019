@@ -27,6 +27,11 @@ exclude:
     - weblink
     - zwave
     - weather
+    - sensor
+    - switch
+    - light
+    - climate
+    - fan
   entities:
     - sensor.front_door_access_control
     - sensor.front_door_alarm_level
