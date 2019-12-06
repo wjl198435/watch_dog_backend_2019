@@ -108,6 +108,9 @@ camera:
     detector_url: http://localhost:8088
     mjpeg_url: !secret motion_camera_url2
     name: house1_room1_ctdet
+  - platform: local_file
+    name: camera_image
+    file_path: /home/homeassistant/stream_0.jpg 
 
 #  - platform: ffmpeg
 #    name: ezviz1
